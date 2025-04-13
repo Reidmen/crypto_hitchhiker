@@ -71,24 +71,30 @@ I implemented a simplified version of the DeepLOB model (using torch) and traine
 ```mermaid
 graph LR
     subgraph DeepLOBModel
-        A[Input (Batch, 1, 100, 42)] --> B(Conv2D (1, 2), Stride (1, 2))
-        B --> C(LeakyReLU)
-        C --> D(BatchNorm2D)
-        D --> E(Conv2D (4, 1), Stride (2, 1))
-        E --> F(LeakyReLU)
-        F --> G(BatchNorm2D)
-        G --> H(Conv2D (1, 2), Stride (1, 1))
-        H --> I(LeakyReLU)
-        I --> J(BatchNorm2D)
-        J --> K(Conv2D (4, 1), Stride (1, 1))
-        K --> L(LeakyReLU)
-        L --> M(BatchNorm2D)
-        M --> N(Reshape (Batch, 46, 160))
-        N --> O(GRU (hidden_size=10, num_layers=4, dropout=0.3))
-        O --> P(Linear (10, 3))
+        A["Input [Batch x 1 x 100 x 42]"]:::input --> B["Conv2D [1,2] Stride [1,2]"]:::conv
+        B --> C["LeakyReLU"]:::activation
+        C --> D["BatchNorm2D"]:::batchnorm
+        D --> E["Conv2D [4,1] Stride [2,1]"]:::conv
+        E --> F["LeakyReLU"]:::activation
+        F --> G["BatchNorm2D"]:::batchnorm
+        G --> H["Conv2D [1,2] Stride [1,1]"]:::conv
+        H --> I["LeakyReLU"]:::activation
+        I --> J["BatchNorm2D"]:::batchnorm
+        J --> K["Conv2D [4,1] Stride [1,1]"]:::conv
+        K --> L["LeakyReLU"]:::activation
+        L --> M["BatchNorm2D"]:::batchnorm
+        M --> N["Reshape [Batch x 46 x 160]"]:::reshape
+        N --> O["GRU [hidden:10, layers:4, dropout:0.3]"]:::gru
+        O --> P["Linear [10,3]"]:::linear
     end
-    
-    classDef default fill:#f9f,stroke:#333,stroke-width:2px;
+
+    classDef input fill:#2C3E50,stroke:#E74C3C,color:#ECF0F1
+    classDef conv fill:#2980B9,stroke:#3498DB,color:#ECF0F1
+    classDef activation fill:#27AE60,stroke:#2ECC71,color:#ECF0F1
+    classDef batchnorm fill:#8E44AD,stroke:#9B59B6,color:#ECF0F1
+    classDef reshape fill:#D35400,stroke:#E67E22,color:#ECF0F1
+    classDef gru fill:#C0392B,stroke:#E74C3C,color:#ECF0F1
+    classDef linear fill:#16A085,stroke:#1ABC9C,color:#ECF0F1
 ```
 
 The total number of parameters of the model: 7777
