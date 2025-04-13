@@ -70,23 +70,53 @@ I implemented a simplified version of the DeepLOB model (using torch) and traine
 
 ```mermaid
 graph LR
-    subgraph DeepLOBModel
-        A["Input [Batch x 1 x 100 x 42]"]:::input --> B["Conv2D [1,2] Stride [1,2]"]:::conv
-        B --> C["LeakyReLU"]:::activation
-        C --> D["BatchNorm2D"]:::batchnorm
-        D --> E["Conv2D [4,1] Stride [2,1]"]:::conv
-        E --> F["LeakyReLU"]:::activation
-        F --> G["BatchNorm2D"]:::batchnorm
-        G --> H["Conv2D [1,2] Stride [1,1]"]:::conv
-        H --> I["LeakyReLU"]:::activation
-        I --> J["BatchNorm2D"]:::batchnorm
-        J --> K["Conv2D [4,1] Stride [1,1]"]:::conv
-        K --> L["LeakyReLU"]:::activation
-        L --> M["BatchNorm2D"]:::batchnorm
-        M --> N["Reshape [Batch x 46 x 160]"]:::reshape
-        N --> O["GRU [hidden:10, layers:4, dropout:0.3]"]:::gru
-        O --> P["Linear [10,3]"]:::linear
+    Input["Input [Batch x 1 x 100 x 42]"]:::input
+
+    subgraph Block1["Conv Block 1"]
+        direction TB
+        B["Conv2D [1,2] Stride [1,2]"]:::conv
+        C["LeakyReLU"]:::activation
+        D["BatchNorm2D"]:::batchnorm
+        B --> C --> D
     end
+
+    subgraph Block2["Conv Block 2"]
+        direction TB
+        E["Conv2D [4,1] Stride [2,1]"]:::conv
+        F["LeakyReLU"]:::activation
+        G["BatchNorm2D"]:::batchnorm
+        E --> F --> G
+    end
+
+    subgraph Block3["Conv Block 3"]
+        direction TB
+        H["Conv2D [1,2] Stride [1,1]"]:::conv
+        I["LeakyReLU"]:::activation
+        J["BatchNorm2D"]:::batchnorm
+        H --> I --> J
+    end
+
+    subgraph Block4["Conv Block 4"]
+        direction TB
+        K["Conv2D [4,1] Stride [1,1]"]:::conv
+        L["LeakyReLU"]:::activation
+        M["BatchNorm2D"]:::batchnorm
+        K --> L --> M
+    end
+
+    subgraph OutputBlock["Output Block"]
+        direction TB
+        N["Reshape [Batch x 46 x 160]"]:::reshape
+        O["GRU [hidden:10, layers:4, dropout:0.3]"]:::gru
+        P["Linear [10,3]"]:::linear
+        N --> O --> P
+    end
+
+    Input --> Block1
+    Block1 --> Block2
+    Block2 --> Block3
+    Block3 --> Block4
+    Block4 --> OutputBlock
 
     classDef input fill:#2C3E50,stroke:#E74C3C,color:#ECF0F1
     classDef conv fill:#2980B9,stroke:#3498DB,color:#ECF0F1
