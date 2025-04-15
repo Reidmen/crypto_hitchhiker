@@ -15,7 +15,7 @@ $$p_t = \frac{p_{ask\_l1} + p_{bid\_l1}}{2}$$
 
 *Moment Calculation:* Two moving averages are calculated for each time $t$: the average mid-price over the preceding $k$ periods ($moment\_{minus}$) and the succeeding $k$ periods ($moment\_{plus}$):
 
-$$moment\_minus = \frac{1}{k} \sum_{i=t-k}^{t-1} p_i,\quad moment\_plus = \frac{1}{k} \sum_{i=t+1}^{t+k} p_i$$
+$$moment\_{minus} = \frac{1}{k} \sum_{i=t-k}^{t-1} p_i,\quad moment\_{plus} = \frac{1}{k} \sum_{i=t+1}^{t+k} p_i$$
 
 > [!NOTE]
 > *Handling Out-of-Bound Prices:* If the calculation window extends beyond the available data boundaries, the averages are computed using only the available data points within that window.
