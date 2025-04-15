@@ -1,17 +1,13 @@
 # Hitchhiker
-There are notes on different efforts to (attempt) predicting crypto's movements.
-So far, to this end, I'll be relying primarily on freely available datasets, nonetheless, paid data is on sight...
-
-A few weeks ago, I came across the [DeepLOB](https://arxiv.org/pdf/1808.03668) article. Interestingly enough, after reading it, I got curious of replicating a simpler model. The reasons were two-fold:
-* The original DeepLOB has over 100K parameters, to predict UP, STATIONARY, DOWN movements, using a rich LOB dataset of over 130M rows. Can something similar be done for the Crypto market?. Here is a 10 Level LOB BTCUSD from Binance [Binance-LOB](https://www.kaggle.com/datasets/siavashraz/bitcoin-perpetualbtcusdtp-limit-order-book-data) recoding 12 consecutive days, starting from January 9th, 2023, until January 20th, 2023,
-* Given the reduction in magnitude of freely-available data, can a 10x simpler model for the Crypto Market be created to predict the three moments as in the DeepLOB?
-
+A few weeks ago, I came across the [DeepLOB](https://arxiv.org/pdf/1808.03668) article. I found it quite interesting, especially if you can find have at hand a rich dataset! My main question was, can something simpler be done in Crypto? The reasons were two-fold:
+* The original DeepLOB has over 100K parameters to predict UP, STATIONARY, DOWN movements, using a rich LOB dataset of over 130M rows. Can the ideas be transfered to a different market?. In Kaggle you can find a nice 10 Level LOB (BTCUSD) [Binance-LOB](https://www.kaggle.com/datasets/siavashraz/bitcoin-perpetualbtcusdtp-limit-order-book-data) recoding 12 consecutive days, starting from January 9th, 2023, until January 20th, 2023,
+* Given the reduction in magnitude of freely-available data, can a 10x simpler model for the Crypto Market be created? What about interpretability? 
 
 ## LOB dataset
-Given my limitation on GPU, I decided to downsample to 500ms the dataset through averages of each period. To goal was simple. Have a roughly averaged look per 0.5 (s). The dataset was nice enough to only require a backfilling to endup with 0 NaNs per feature. 
+Given my limitations on GPU, I decided to downsample the dataset through (500ms) average periods. To goal was simple, have 0.5 (s) data points. The dataset was nice enough to only require a backfilling to endup with 0 NaNs per feature. 
 
 ### Computing Moves (k)
-As done in [DeepLOB](https://arxiv.org/pdf/1808.03668) article, the aim is to predict movement directions by computing 
+As done in the [DeepLOB](https://arxiv.org/pdf/1808.03668) article, the aim is to predict movement directions by computing 
 mid prices (L1 Bid/Ask mid price) and averaged mid prices over past and future $k$ periods. The definition are given below:
 
 *Mid-Price Calculation:* The mid-price ($p_t$, at time $t$) is calculated as the average of the best ask price ($p_{ask\_l1}$) and 
@@ -65,8 +61,9 @@ The processed dataset contains $\approx$ 1.6M rows and 42 features, consisting o
 ## Simple DeepLOB
 
 I implemented a simplified version of the DeepLOB model (using torch) and trained it using Adam method, learning rate (0.003). An important aspect was to keep the model simple, but also keep enough convolution layers, as they nicely encoded volume-adjusted bids and asks, as well as bid-ask averages. Therefore, each layer had a purpose, which I'll explain.
+Each batch includes a time-window of 100 previous data points, to be exploited by the convolution layers. 
 
->[!NOTE] After some experimentation I quickly realize that linear layers did not help with the recurrent nature of the series, and instead introduced more parameters leading to exploding gradients. 
+> [!NOTE] After some experimentation I quickly realize that linear layers did not help with the recurrent nature of the series, and instead introduced more parameters leading to exploding gradients. 
 
 ```mermaid
 graph LR
@@ -126,6 +123,33 @@ graph LR
     classDef gru fill:#C0392B,stroke:#E74C3C,color:#ECF0F1
     classDef linear fill:#16A085,stroke:#1ABC9C,color:#ECF0F1
 ```
+
+As you can see, the net has blocks as defined below ($i,j,k$ varying per block). The convolution aims at capturing linear relationships between the tabulated dataset, especifically relationships between bid/asks prices, and between temporal values.
+
+```mermaid
+graph LR
+    subgraph Block1["Conv Block i"]
+        direction TB
+        B["Conv2D [j, k] Stride [j, k]"]
+        C["LeakyReLU"]:::activation
+        D["BatchNorm2D"]:::batchnorm
+        B --> C --> D
+    end
+
+    classDef input fill:#2C3E50,stroke:#E74C3C,color:#ECF0F1
+    classDef conv fill:#2980B9,stroke:#3498DB,color:#ECF0F1
+    classDef activation fill:#27AE60,stroke:#2ECC71,color:#ECF0F1
+    classDef batchnorm fill:#8E44AD,stroke:#9B59B6,color:#ECF0F1
+```
+
+Therefore:
+
+* [`Conv Block 1`] Computes implicitly volume-adjusted bids/asks via the kernel `(1, 2)`, stride `(1, 2)`. Notice that, this operation is per row. A leaky activation is used for stability purposes, and normalized with `BatchNorm2D`. I call it `space-adjusted` block.
+* [`Conv Block 2`] Computes time-dependent adjusted quantities (from the volume-adjusted bids/asks) via the kernel `(4, 1)`. Here, the kernel will look back four points, lagging 2s of information. I call it `temporal-adjusted` block.
+* [`Conv Block 3`] As the previous two blocks provide volume-adjusted and time-adjusted bids/asks, the third block aims at capturing the relationships between bids/asks across the adjusted quantities. This is exactly the purpose of the kernel `1, 2`. As before, for stability reasons, `Leazy` + `BatchNorm2D` is added.
+* [`Conv Block 4`] As the third block is capturing purely `space-adjusted` information, a block for `temporal-adjusted` information is added. This is specified through the kernel `(4, 1)`.
+* [`Output Block`] The convolution blocks aim at capturing different level of bid/ask volume-adjusted quantities including their fair prices. To capture then nonlinear relationships and potentially exploit existing hidden states, a GRU layer is added here. If you ask why not an LSTM?. The answer is simple. I prefer simplicity and explainability.
+
 
 The total number of parameters of the model: 7777
 
