@@ -194,6 +194,7 @@ $$
 To simulate paths of the log-price $X_t$ following the compensated Merton model, we can use the Euler-Maruyama scheme, which approximates the SDE over small time steps $\Delta t$. Let $X_k = X(k \Delta t)$ be the log-price at time step $k$.
 
 The discrete-time update rule is:
+
 $$
 X_{k+1} = X_k + \mu' \Delta t + \sigma \sqrt{\Delta t} Z_k + \sum_{j=1}^{\Delta N_k} Y_{k,j}
 $$
