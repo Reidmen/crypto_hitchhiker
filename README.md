@@ -3,6 +3,9 @@ A few weeks ago, I came across the [DeepLOB](https://arxiv.org/pdf/1808.03668) a
 * The original DeepLOB model has over 100K parameters to predict UP, STATIONARY, and DOWN movements, using a rich LOB dataset of over 130M rows. Can these ideas be transferred to a different market? On Kaggle, you can find a suitable 10-Level LOB (BTCUSDT Perpetual) dataset: [Binance-LOB](https://www.kaggle.com/datasets/siavashraz/bitcoin-perpetualbtcusdtp-limit-order-book-data), recording 12 consecutive days from January 9th, 2023, to January 20th, 2023.
 * Given the reduction in the magnitude of freely available data compared to the original study, can a significantly simpler model (10x or 12x fewer parameters) be created for the Crypto Market? What about its interpretability?
 
+> [!NOTE]
+> Theoretical questions like average price dynamics, and behavior can be found in the [preamble](https://github.com/Reidmen/crypto_hitchhiker/PREAMBLE.md).
+
 ## LOB dataset
 Given my GPU limitations, I decided to downsample the dataset by averaging over 500ms periods. The goal was simple: obtain data points representing 0.5 second intervals. The dataset required only minimal backfilling to end up with 0 NaNs per feature.
 
