@@ -114,14 +114,7 @@ X_t - X_0 = \int_0^t \mu' ds + \int_0^t \sigma dW_s + \int_0^t Y dN_s = \mu' t +
 $$
 
 *   **Mean:** $E(X_t)$
-    The expected log-price reflects the overall trend:
-
-    $$
-    E(X_t) = X_0 + E(\mu' t) + E(\sigma W_t) + E(\sum_{i=1}^{N_t} Y_i)
-    $$
-
-    Since $E(W_t) = 0$ and using $E(\sum_{i=1}^{N_t} Y_i) = E(N_t)E(Y) = (\lambda t) \mu_J$:
-
+    The expected log-price reflects the overall trend
     $$
     E(X_t) = X_0 + \mu' t + \lambda t \mu_J
     $$
@@ -132,27 +125,13 @@ $$
     E(X_t) = X_0 + (\mu - \frac{1}{2}\sigma^2 - \lambda(e^{\mu_J + \sigma_J^2/2} - 1) + \lambda \mu_J) t
     $$
 
-    *Economically*: The mean log-price grows linearly with time, driven by the original asset drift $\mu$, adjusted downwards by volatility ($\frac{1}{2}\sigma^2$) and the expected relative jump size ($\lambda \kappa$). It is also adjusted upwards ($\lambda \mu_J$).
+    The mean log-price grows linearly with time, driven by the original asset drift $\mu$, adjusted downwards by volatility ($\frac{1}{2}\sigma^2$) and the expected relative jump size ($\lambda \kappa$). It is also adjusted upwards ($\lambda \mu_J$).
 
 *   **Variance:** $\text{Var}(X_t)$
-    The variance measures the dispersion or uncertainty around the expected log-price.
-
-    $$
-    \text{Var}(X_t) = \text{Var}(\mu' t + \sigma W_t + \sum_{i=1}^{N_t} Y_i)
-    $$
-
-    Since $\mu't$ is deterministic, and $W_t$ and the compound Poisson process $\sum Y_i$ are independent:
-
-    $$
-    \text{Var}(X_t) = \text{Var}(\sigma W_t) + \text{Var}(\sum_{i=1}^{N_t} Y_i)
-    $$
-
-    which after some work becomes:
-
+    The variance measures the uncertainty around the expected log-price.
     $$
     \text{Var}(X_t) = \sigma^2 t + \lambda t (\mu_J^2 + \sigma_J^2)
     $$
-    *Economically*: The total variance grows linearly with time.
 
 *   **Skewness:** $\text{Skew}(X_t)$
     Skewness measures the asymmetry of the distribution of log-returns. A skewness of 0 indicates symmetry. Positive skewness implies a longer tail on the right, while negative skewness implies a longer left tail.
@@ -162,7 +141,9 @@ $$
     $$
     \kappa_3(X_t) = E((X_t - E(X_t))^3) = \lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)
     $$
+
     The skewness coefficient $\gamma_1$ is:
+
     $$
     \gamma_1 = \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} = \frac{\lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)}{(\sigma^2 t + \lambda t E(Y^2))^{3/2}} = \frac{\lambda (\mu_J^3 + 3\mu_J\sigma_J^2)}{t^{1/2}(\sigma^2 + \lambda E(Y^2))^{3/2}}
     $$
@@ -178,16 +159,14 @@ $$
     The excess kurtosis coefficient $\gamma_2$ is given by:
 
     $$
-    \gamma_2 = \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2} = \frac{\lambda t E(Y^4)}{(\sigma^2 t + \lambda t E(Y^2))^2} = \frac{\lambda E(Y^4)}{t (\sigma^2 + \lambda E(Y^2))^2}
+    \gamma_2 = \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2} = \frac{\lambda t E(Y^4)}{(\sigma^2 t + \lambda t E(Y^2))^2} 
     $$
-
-    Substituting $E(Y^4)$ and $E(Y^2)$:
 
     $$
     \gamma_2 = \frac{\lambda (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)}{t (\sigma^2 + \lambda (\mu_J^2 + \sigma_J^2))^2}
     $$
 
-    *Economically*: Fatter tails imply a higher probability of large, sudden gains or losses.
+    Fatter tails imply a higher probability of large, sudden gains or losses.
 
 ## Euler-Maruyama Discretization for Simulation
 
