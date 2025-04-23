@@ -83,15 +83,19 @@ Where $\kappa = E[e^Y - 1]$ is the expected *relative* price jump.
 
 
 For $Y \sim N(\mu_J, \sigma_J^2)$, the expected value of $e^Y$ is $E[e^Y] = e^{\mu_J + \sigma_J^2/2}$ (direct application of MGF). Therefore:
+
 $$
 \kappa = e^{\mu_J + \sigma_J^2/2} - 1
 $$
 
 Let's define the compensated drift as $\mu'$:
+
 $$
 \mu' = \mu - \frac{1}{2} \sigma^2 - \lambda \kappa = \mu - \frac{1}{2} \sigma^2 - \lambda (e^{\mu_J + \sigma_J^2/2} - 1)
 $$
+
 The compensated SDE becomes:
+
 $$
 dX_t = \mu' dt + \sigma dW_t + Y dN_t
 $$
@@ -104,35 +108,47 @@ $$
 Let's look at key statistical moments of the log-price process $X_t = \ln S_t$, assuming $X_0 = \ln S_0$ is the initial log-price. We use the compensated process for these calculations.
 
 The total change $X_t - X_0$ can be written as:
+
 $$
 X_t - X_0 = \int_0^t \mu' ds + \int_0^t \sigma dW_s + \int_0^t Y dN_s = \mu' t + \sigma W_t + \sum_{i=1}^{N_t} Y_i
 $$
 
 *   **Mean:** $E[X_t]$
     The expected log-price reflects the overall trend:
+
     $$
     E[X_t] = X_0 + E[\mu' t] + E[\sigma W_t] + E[\sum_{i=1}^{N_t} Y_i]
     $$
+
     Since $E[W_t] = 0$ and using $E[\sum_{i=1}^{N_t} Y_i] = E[N_t]E[Y] = (\lambda t) \mu_J$:
+
     $$
     E[X_t] = X_0 + \mu' t + \lambda t \mu_J
     $$
+
     Substituting $\mu'$:
+
     $$
     E[X_t] = X_0 + (\mu - \frac{1}{2}\sigma^2 - \lambda(e^{\mu_J + \sigma_J^2/2} - 1) + \lambda \mu_J) t
     $$
+
     *Economically*: The mean log-price grows linearly with time, driven by the original asset drift $\mu$, adjusted downwards by volatility ($\frac{1}{2}\sigma^2$) and the expected relative jump size ($\lambda \kappa$). It is also adjusted upwards ($\lambda \mu_J$).
 
 *   **Variance:** $\text{Var}(X_t)$
     The variance measures the dispersion or uncertainty around the expected log-price.
+
     $$
     \text{Var}(X_t) = \text{Var}(\mu' t + \sigma W_t + \sum_{i=1}^{N_t} Y_i)
     $$
+
     Since $\mu't$ is deterministic, and $W_t$ and the compound Poisson process $\sum Y_i$ are independent:
+
     $$
     \text{Var}(X_t) = \text{Var}(\sigma W_t) + \text{Var}(\sum_{i=1}^{N_t} Y_i)
     $$
+
     which after some work becomes:
+
     $$
     \text{Var}(X_t) = \sigma^2 t + \lambda t (\mu_J^2 + \sigma_J^2) 
     $$
@@ -155,17 +171,22 @@ $$
     Kurtosis measures the *tailedness* of the distribution compared to a normal distribution. The *excess kurtosis* ($\gamma_2$) is also used, defined as $\text{Kurtosis} - 3$. A positive excess kurtosis ($\gamma_2 > 0$) indicated heavier tails and sharper peaks compared to the normal distribution. Jumps are the main source of kurtosis.
 
     Excess kurtosis is derived from the fourth standardized moment $\kappa_4$.
+
     $$
     \kappa_4(X_t) = \lambda t (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)
     $$
     The excess kurtosis coefficient $\gamma_2$ is given by:
+
     $$
     \gamma_2 = \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2} = \frac{\lambda t E[Y^4]}{(\sigma^2 t + \lambda t E[Y^2])^2} = \frac{\lambda E[Y^4]}{t (\sigma^2 + \lambda E[Y^2])^2}
     $$
+
     Substituting $E[Y^4]$ and $E[Y^2]$:
+
     $$
     \gamma_2 = \frac{\lambda (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)}{t (\sigma^2 + \lambda (\mu_J^2 + \sigma_J^2))^2}
     $$
+
     *Economically*: Fatter tails imply a higher probability of large, sudden gains or losses. 
 
 ## Euler-Maruyama Discretization for Simulation

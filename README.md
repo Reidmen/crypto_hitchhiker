@@ -4,7 +4,7 @@ A few weeks ago, I came across the [DeepLOB](https://arxiv.org/pdf/1808.03668) a
 * Given the reduction in the magnitude of freely available data compared to the original study, can a significantly simpler model (10x or 12x fewer parameters) be created for the Crypto Market? What about its interpretability?
 
 > [!NOTE]
-> Theoretical questions like average price dynamics, and behavior can be found in the [preamble](https://github.com/Reidmen/crypto_hitchhiker/PREAMBLE.md).
+> Theoretical questions like average price dynamics, and behavior can be found in the [preamble](https://github.com/Reidmen/crypto_hitchhiker/blob/main/PREAMBLE.md).
 
 ## LOB dataset
 Given my GPU limitations, I decided to downsample the dataset by averaging over 500ms periods. The goal was simple: obtain data points representing 0.5 second intervals. The dataset required only minimal backfilling to end up with 0 NaNs per feature.
