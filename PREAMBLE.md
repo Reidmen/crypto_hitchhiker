@@ -65,7 +65,7 @@ $$
 
 ## Martingale Compensation
 
-The process $X_t$ above is not a martingale, the jump term $Y dN_t$ has a non-zero expected value $E[Y dN_t] = E[Y] E[dN_t] = \mu_J (\lambda dt)$. 
+The process $X_t$ above is not a martingale, the jump term $Y dN_t$ has a non-zero expected value $E(Y dN_t) = E(Y) E(dN_t) = \mu_J (\lambda dt)$.
 
 *Now, the martingale property is a serious thing, it defines a risk-neutral measure*, a core requirements when a market is arbitrage free.
 
@@ -77,12 +77,12 @@ $$
 dX_t = (\mu - \frac{1}{2} \sigma^2 - \lambda \kappa) dt + \sigma dW_t + Y dN_t
 $$
 
-Where $\kappa = E[e^Y - 1]$ is the expected *relative* price jump.
-*   $\kappa$: Represents the average percentage change in price expected *per jump*. 
-*   $\lambda \kappa$: Represents the total expected drift contribution *per unit time* from all jumps. 
+Where $\kappa = E(e^Y - 1)$ is the expected *relative* price jump.
+*   $\kappa$: Represents the average percentage change in price expected *per jump*.
+*   $\lambda \kappa$: Represents the total expected drift contribution *per unit time* from all jumps.
 
 
-For $Y \sim N(\mu_J, \sigma_J^2)$, the expected value of $e^Y$ is $E[e^Y] = e^{\mu_J + \sigma_J^2/2}$ (direct application of MGF). Therefore:
+For $Y \sim N(\mu_J, \sigma_J^2)$, the expected value of $e^Y$ is $E(e^Y) = e^{\mu_J + \sigma_J^2/2}$ (direct application of MGF). Therefore:
 
 $$
 \kappa = e^{\mu_J + \sigma_J^2/2} - 1
@@ -113,23 +113,23 @@ $$
 X_t - X_0 = \int_0^t \mu' ds + \int_0^t \sigma dW_s + \int_0^t Y dN_s = \mu' t + \sigma W_t + \sum_{i=1}^{N_t} Y_i
 $$
 
-*   **Mean:** $E[X_t]$
+*   **Mean:** $E(X_t)$
     The expected log-price reflects the overall trend:
 
     $$
-    E[X_t] = X_0 + E[\mu' t] + E[\sigma W_t] + E[\sum_{i=1}^{N_t} Y_i]
+    E(X_t) = X_0 + E(\mu' t) + E(\sigma W_t) + E(\sum_{i=1}^{N_t} Y_i)
     $$
 
-    Since $E[W_t] = 0$ and using $E[\sum_{i=1}^{N_t} Y_i] = E[N_t]E[Y] = (\lambda t) \mu_J$:
+    Since $E(W_t) = 0$ and using $E(\sum_{i=1}^{N_t} Y_i) = E(N_t)E(Y) = (\lambda t) \mu_J$:
 
     $$
-    E[X_t] = X_0 + \mu' t + \lambda t \mu_J
+    E(X_t) = X_0 + \mu' t + \lambda t \mu_J
     $$
 
     Substituting $\mu'$:
 
     $$
-    E[X_t] = X_0 + (\mu - \frac{1}{2}\sigma^2 - \lambda(e^{\mu_J + \sigma_J^2/2} - 1) + \lambda \mu_J) t
+    E(X_t) = X_0 + (\mu - \frac{1}{2}\sigma^2 - \lambda(e^{\mu_J + \sigma_J^2/2} - 1) + \lambda \mu_J) t
     $$
 
     *Economically*: The mean log-price grows linearly with time, driven by the original asset drift $\mu$, adjusted downwards by volatility ($\frac{1}{2}\sigma^2$) and the expected relative jump size ($\lambda \kappa$). It is also adjusted upwards ($\lambda \mu_J$).
@@ -150,9 +150,9 @@ $$
     which after some work becomes:
 
     $$
-    \text{Var}(X_t) = \sigma^2 t + \lambda t (\mu_J^2 + \sigma_J^2) 
+    \text{Var}(X_t) = \sigma^2 t + \lambda t (\mu_J^2 + \sigma_J^2)
     $$
-    *Economically*: The total variance grows linearly with time. 
+    *Economically*: The total variance grows linearly with time.
 
 *   **Skewness:** $\text{Skew}(X_t)$
     Skewness measures the asymmetry of the distribution of log-returns. A skewness of 0 indicates symmetry. Positive skewness implies a longer tail on the right, while negative skewness implies a longer left tail.
@@ -160,11 +160,11 @@ $$
     Skewness is derived from the third standardized moment ($\kappa_3$).
 
     $$
-    \kappa_3(X_t) = E[(X_t - E[X_t])^3] = \lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)
+    \kappa_3(X_t) = E((X_t - E(X_t))^3) = \lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)
     $$
     The skewness coefficient $\gamma_1$ is:
     $$
-    \gamma_1 = \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} = \frac{\lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)}{(\sigma^2 t + \lambda t E[Y^2])^{3/2}} = \frac{\lambda (\mu_J^3 + 3\mu_J\sigma_J^2)}{t^{1/2}(\sigma^2 + \lambda E[Y^2])^{3/2}}
+    \gamma_1 = \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} = \frac{\lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)}{(\sigma^2 t + \lambda t E(Y^2))^{3/2}} = \frac{\lambda (\mu_J^3 + 3\mu_J\sigma_J^2)}{t^{1/2}(\sigma^2 + \lambda E(Y^2))^{3/2}}
     $$
 
 *   **Kurtosis:** $\text{Kurt}(X_t)$
@@ -178,16 +178,16 @@ $$
     The excess kurtosis coefficient $\gamma_2$ is given by:
 
     $$
-    \gamma_2 = \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2} = \frac{\lambda t E[Y^4]}{(\sigma^2 t + \lambda t E[Y^2])^2} = \frac{\lambda E[Y^4]}{t (\sigma^2 + \lambda E[Y^2])^2}
+    \gamma_2 = \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2} = \frac{\lambda t E(Y^4)}{(\sigma^2 t + \lambda t E(Y^2))^2} = \frac{\lambda E(Y^4)}{t (\sigma^2 + \lambda E(Y^2))^2}
     $$
 
-    Substituting $E[Y^4]$ and $E[Y^2]$:
+    Substituting $E(Y^4)$ and $E(Y^2)$:
 
     $$
     \gamma_2 = \frac{\lambda (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)}{t (\sigma^2 + \lambda (\mu_J^2 + \sigma_J^2))^2}
     $$
 
-    *Economically*: Fatter tails imply a higher probability of large, sudden gains or losses. 
+    *Economically*: Fatter tails imply a higher probability of large, sudden gains or losses.
 
 ## Euler-Maruyama Discretization for Simulation
 
@@ -200,9 +200,9 @@ $$
 
 Where:
 *   $\mu' \Delta t$: The deterministic drift component over the interval $\Delta t$.
-*   $\sigma \sqrt{\Delta t} Z_k$: The contribution from the continuous diffusion part. $Z_k \sim N(0, 1)$ is a random draw from a standard normal distribution, independent for each step $k$. 
+*   $\sigma \sqrt{\Delta t} Z_k$: The contribution from the continuous diffusion part. $Z_k \sim N(0, 1)$ is a random draw from a standard normal distribution, independent for each step $k$.
 
-*   $\Delta N_k$: The number of jumps occurring in the time interval $[k\Delta t, (k+1)\Delta t]$. $\Delta N_k$ is drawn from a Poisson distribution with parameter $\lambda \Delta t$.
+*   $\Delta N_k$: The number of jumps occurring in the time interval $(k\Delta t, (k+1)\Delta t)$. $\Delta N_k$ is drawn from a Poisson distribution with parameter $\lambda \Delta t$.
 
 *   $\sum_{j=1}^{\Delta N_k} Y_{k,j}$: The sum of jump sizes occurring in the interval. If $\Delta N_k = 0$, this sum is zero. If $\Delta N_k > 0$, we draw $\Delta N_k$ independent jump sizes $Y_{k,j}$ from the jump size distribution $N(\mu_J, \sigma_J^2)$ and add their sum to the log-price.
 
