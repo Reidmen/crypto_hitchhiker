@@ -113,21 +113,16 @@ $$
 X_t - X_0 = \int_0^t \mu' ds + \int_0^t \sigma dW_s + \int_0^t Y dN_s = \mu' t + \sigma W_t + \sum_{i=1}^{N_t} Y_i
 $$
 
-*   **Mean:** $E(X_t)$
+* **Mean:** $E(X_t)$
     The expected log-price reflects the overall trend
-    $$
-    E(X_t) = X_0 + \mu' t + \lambda t \mu_J
-    $$
-
-    Substituting $\mu'$:
 
     $$
-    E(X_t) = X_0 + (\mu - \frac{1}{2}\sigma^2 - \lambda(e^{\mu_J + \sigma_J^2/2} - 1) + \lambda \mu_J) t
+    E(X_t) = X_0 + \mu' t + \lambda t \mu_J = X_0 + (\mu - \frac{1}{2}\sigma^2 - \lambda(e^{\mu_J + \sigma_J^2/2} - 1) + \lambda \mu_J) t
     $$
 
     The mean log-price grows linearly with time, driven by the original asset drift $\mu$, adjusted downwards by volatility ($\frac{1}{2}\sigma^2$) and the expected relative jump size ($\lambda \kappa$). It is also adjusted upwards ($\lambda \mu_J$).
 
-*   **Variance:** $\text{Var}(X_t)$
+* **Variance:** $\text{Var}(X_t)$
     The variance measures the uncertainty around the expected log-price.
     $$
     \text{Var}(X_t) = \sigma^2 t + \lambda t (\mu_J^2 + \sigma_J^2)
@@ -139,13 +134,13 @@ $$
     Skewness is derived from the third standardized moment ($\kappa_3$).
 
     $$
-    \kappa_3(X_t) = E((X_t - E(X_t))^3) = \lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)
+    \kappa_3(X_t) \equiv E((X_t - E(X_t))^3) = \lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)
     $$
 
     The skewness coefficient $\gamma_1$ is:
 
     $$
-    \gamma_1 = \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} = \frac{\lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)}{(\sigma^2 t + \lambda t E(Y^2))^{3/2}} = \frac{\lambda (\mu_J^3 + 3\mu_J\sigma_J^2)}{t^{1/2}(\sigma^2 + \lambda E(Y^2))^{3/2}}
+    \gamma_1 \equiv \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} = \frac{\lambda (\mu_J^3 + 3\mu_J\sigma_J^2)}{t^{1/2}(\sigma^2 + \lambda E(Y^2))^{3/2}}
     $$
 
 *   **Kurtosis:** $\text{Kurt}(X_t)$
@@ -156,17 +151,12 @@ $$
     $$
     \kappa_4(X_t) = \lambda t (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)
     $$
+
     The excess kurtosis coefficient $\gamma_2$ is given by:
 
     $$
-    \gamma_2 = \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2} = \frac{\lambda t E(Y^4)}{(\sigma^2 t + \lambda t E(Y^2))^2} 
+    \gamma_2 \equiv \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2} = \frac{\lambda (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)}{t (\sigma^2 + \lambda (\mu_J^2 + \sigma_J^2))^2}
     $$
-
-    $$
-    \gamma_2 = \frac{\lambda (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)}{t (\sigma^2 + \lambda (\mu_J^2 + \sigma_J^2))^2}
-    $$
-
-    Fatter tails imply a higher probability of large, sudden gains or losses.
 
 ## Euler-Maruyama Discretization for Simulation
 
@@ -196,6 +186,10 @@ Comparing Merton's model to Black-Scholes highlights two main things jumps-matte
 *   **Fat Tails (Kurtosis):** The jump component introduces excess kurtosis, making extreme events more likely.
 
 *   **Asymmetry (Skewness):** The distribution is asymetrical.
+
+The simulations below, are characterized by:
+* A time horizon of 1 year, timestep of $1/252$ daily steps, and $10_000$ simulated paths.
+* A drift and volatility $\mu = 0.1, \sigma = 0.2$ and 2 expected jumps per year $\lambda = 2$, with log-jump size $\sim \mathcal{N}(\mu_J, \sigma_J)$.
 
 ![merton_vs_pure_realizations](images/realization_merton_and_pure_process.png)
 
