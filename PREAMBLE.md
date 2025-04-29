@@ -4,9 +4,9 @@ These notes aim to give intuition on analyzing processes that mimic cryto price 
 
 I will use the framework of Stochastic Calculus (Itô calculus) extended to jump processes. The primary goal here is to build intuition rather than going into the hard math.
 
-## Baseline: Black-Scholes Model
+## Baseline (GBM)
 
-A foundational model is the Black-Scholes model. Here, a description based on the price $S_t$ over time $t$ is given by:
+A foundational model is the Geometric Brownian Motion. Here, a description based on the price $S_t$ over time $t$ is given by:
 
 $$
 dS_t = \mu S_t dt + \sigma S_t dW_t
@@ -29,9 +29,9 @@ $$
 
 ## Adding Jumps: Merton's Jump-Diffusion Model
 
-So far so good, the Black-Scholes is a nice baseline, but real-world assets, especially volatile ones like cryptocurrencies have sudden jumps not captured by continuous dynamics. Merton's model extends Black-Scholes by adding a jump component.
+So far so good, the GBM is a nice baseline, but real-world assets, especially volatile ones like cryptocurrencies have sudden jumps not captured by continuous dynamics. Merton's model extends GBM by adding a jump component.
 
-The core idea is to model jumps using a *compound Poisson process*. This assumes that significant **events** causing price jumps occur randomly according following a Poisson process, the magnitude being also random. 
+The core idea is to model jumps using a *compound Poisson process*. This assumes that significant **events** causing price jumps occur randomly according to a Poisson process with the magnitude being also random. 
 
 Let $N_t$ be a Poisson process with intensity $\lambda$.
 *   $N_t$: Counts the number of jumps that have occurred up to time $t$.
@@ -117,7 +117,7 @@ $$
     The expected log-price reflects the overall trend
 
     $$
-    E(X_t) = X_0 + \mu' t + \lambda t \mu_J = X_0 + (\mu - \frac{1}{2}\sigma^2 - \lambda(e^{\mu_J + \sigma_J^2/2} - 1) + \lambda \mu_J) t
+    E(X_t) = X_0 + \mu' t + \lambda t \mu_J
     $$
 
     The mean log-price grows linearly with time, driven by the original asset drift $\mu$, adjusted downwards by volatility ($\frac{1}{2}\sigma^2$) and the expected relative jump size ($\lambda \kappa$). It is also adjusted upwards ($\lambda \mu_J$).
@@ -140,7 +140,7 @@ $$
     The skewness coefficient $\gamma_1$ is:
 
     $$
-    \gamma_1 \equiv \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} = \frac{\lambda (\mu_J^3 + 3\mu_J\sigma_J^2)}{t^{1/2}(\sigma^2 + \lambda E(Y^2))^{3/2}}
+    \gamma_1 \equiv \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} 
     $$
 
 *   **Kurtosis:** $\text{Kurt}(X_t)$
@@ -155,7 +155,7 @@ $$
     The excess kurtosis coefficient $\gamma_2$ is given by:
 
     $$
-    \gamma_2 \equiv \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2} = \frac{\lambda (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)}{t (\sigma^2 + \lambda (\mu_J^2 + \sigma_J^2))^2}
+    \gamma_2 \equiv \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2}
     $$
 
 ## Euler-Maruyama Discretization for Simulation
@@ -181,7 +181,7 @@ Where:
 
 ## Impact of Jumps on Distribution Shape
 
-Comparing Merton's model to Black-Scholes highlights two main things jumps-matter!
+Comparing Merton's model to a pure diffusion highlights two main things jumps-matter!
 
 *   **Fat Tails (Kurtosis):** The jump component introduces excess kurtosis, making extreme events more likely.
 
