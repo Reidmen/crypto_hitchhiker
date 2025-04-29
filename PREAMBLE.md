@@ -124,6 +124,7 @@ The mean log-price grows linearly with time, driven by the original asset drift 
 
 ### **Variance:** $\text{Var}(X_t)$
 The variance measures the uncertainty around the expected log-price.
+
 $$
 \text{Var}(X_t) = \sigma^2 t + \lambda t (\mu_J^2 + \sigma_J^2)
 $$
