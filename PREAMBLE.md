@@ -113,50 +113,50 @@ $$
 X_t - X_0 = \int_0^t \mu' ds + \int_0^t \sigma dW_s + \int_0^t Y dN_s = \mu' t + \sigma W_t + \sum_{i=1}^{N_t} Y_i
 $$
 
-* **Mean:** $E(X_t)$
-    The expected log-price reflects the overall trend
+### **Mean** $E(X_t)$
+The expected log-price reflects the overall trend
 
-    $$
-    E(X_t) = X_0 + \mu' t + \lambda t \mu_J
-    $$
+$$
+E(X_t) = X_0 + \mu' t + \lambda t \mu_J
+$$
 
-    The mean log-price grows linearly with time, driven by the original asset drift $\mu$, adjusted downwards by volatility ($\frac{1}{2}\sigma^2$) and the expected relative jump size ($\lambda \kappa$). It is also adjusted upwards ($\lambda \mu_J$).
+The mean log-price grows linearly with time, driven by the original asset drift $\mu$, adjusted downwards by volatility ($\frac{1}{2}\sigma^2$) and the expected relative jump size ($\lambda \kappa$). It is also adjusted upwards ($\lambda \mu_J$).
 
-* **Variance:** $\text{Var}(X_t)$
-    The variance measures the uncertainty around the expected log-price.
-    $$
-    \text{Var}(X_t) = \sigma^2 t + \lambda t (\mu_J^2 + \sigma_J^2)
-    $$
+### **Variance:** $\text{Var}(X_t)$
+The variance measures the uncertainty around the expected log-price.
+$$
+\text{Var}(X_t) = \sigma^2 t + \lambda t (\mu_J^2 + \sigma_J^2)
+$$
 
-*   **Skewness:** $\text{Skew}(X_t)$
-    Skewness measures the asymmetry of the distribution of log-returns. A skewness of 0 indicates symmetry. Positive skewness implies a longer tail on the right, while negative skewness implies a longer left tail.
+### **Skewness:** $\text{Skew}(X_t)$
+Skewness measures the asymmetry of the distribution of log-returns. A skewness of 0 indicates symmetry. Positive skewness implies a longer tail on the right, while negative skewness implies a longer left tail.
 
-    Skewness is derived from the third standardized moment ($\kappa_3$).
+Skewness is derived from the third standardized moment ($\kappa_3$).
 
-    $$
-    \kappa_3(X_t) \equiv E((X_t - E(X_t))^3) = \lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)
-    $$
+$$
+\kappa_3(X_t) \equiv E((X_t - E(X_t))^3) = \lambda t (\mu_J^3 + 3\mu_J\sigma_J^2)
+$$
 
-    The skewness coefficient $\gamma_1$ is:
+The skewness coefficient $\gamma_1$ is:
 
-    $$
-    \gamma_1 \equiv \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} 
-    $$
+$$
+\gamma_1 \equiv \frac{\kappa_3(X_t)}{(\text{Var}(X_t))^{3/2}} 
+$$
 
-*   **Kurtosis:** $\text{Kurt}(X_t)$
-    Kurtosis measures the *tailedness* of the distribution compared to a normal distribution. The *excess kurtosis* ($\gamma_2$) is also used, defined as $\text{Kurtosis} - 3$. A positive excess kurtosis ($\gamma_2 > 0$) indicated heavier tails and sharper peaks compared to the normal distribution. Jumps are the main source of kurtosis.
+### **Kurtosis:** $\text{Kurt}(X_t)$
+Kurtosis measures the *tailedness* of the distribution compared to a normal distribution. The *excess kurtosis* ($\gamma_2$) is also used, defined as $\text{Kurtosis} - 3$. A positive excess kurtosis ($\gamma_2 > 0$) indicated heavier tails and sharper peaks compared to the normal distribution. Jumps are the main source of kurtosis.
 
-    Excess kurtosis is derived from the fourth standardized moment $\kappa_4$.
+Excess kurtosis is derived from the fourth standardized moment $\kappa_4$.
 
-    $$
-    \kappa_4(X_t) = \lambda t (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)
-    $$
+$$
+\kappa_4(X_t) = \lambda t (\mu_J^4 + 6\mu_J^2\sigma_J^2 + 3\sigma_J^4)
+$$
 
-    The excess kurtosis coefficient $\gamma_2$ is given by:
+The excess kurtosis coefficient $\gamma_2$ is given by:
 
-    $$
-    \gamma_2 \equiv \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2}
-    $$
+$$
+\gamma_2 \equiv \frac{\kappa_4(X_t)}{(\text{Var}(X_t))^2}
+$$
 
 ## Euler-Maruyama Discretization for Simulation
 
